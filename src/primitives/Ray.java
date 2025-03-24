@@ -3,7 +3,7 @@ package primitives;
 /**
  * Class Ray represents a ray in 3D space.
  * A ray is defined by an origin point and a normalized direction vector.
- * @author Your Name
+ * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Ray {
     private final Point head;

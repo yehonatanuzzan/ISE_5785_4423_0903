@@ -23,7 +23,9 @@ public record Double3(double d1, double d2, double d3) {
     * Constructor to initialize entities.Double3 based object the same number values
     * @param value number value for all 3 numbers
     */
-   public Double3(double value) { this(value, value, value); }
+   public Double3(double value) {
+      this(value, value, value);
+   }
 
    @Override
    public boolean equals(Object obj) {
@@ -35,10 +37,14 @@ public record Double3(double d1, double d2, double d3) {
    }
 
    @Override
-   public int hashCode() { return (int) Math.round(d1 + d2 + d3); }
+   public int hashCode() {
+      return (int) Math.round(d1 + d2 + d3);
+   }
 
    @Override
-   public String toString() { return "(" + d1 + "," + d2 + "," + d3 + ")"; }
+   public String toString() {
+      return "(" + d1 + "," + d2 + "," + d3 + ")";
+   }
 
    /**
     * Sum two floating point triads into a new triad where each couple of numbers
@@ -46,7 +52,9 @@ public record Double3(double d1, double d2, double d3) {
     * @param  rhs right hand side operand for addition
     * @return     result of add
     */
-   public Double3 add(Double3 rhs) { return new Double3(d1 + rhs.d1, d2 + rhs.d2, d3 + rhs.d3); }
+   public Double3 add(Double3 rhs) {
+      return new Double3(d1 + rhs.d1, d2 + rhs.d2, d3 + rhs.d3);
+   }
 
    /**
     * Subtract two floating point triads into a new triad where each couple of
@@ -54,7 +62,9 @@ public record Double3(double d1, double d2, double d3) {
     * @param  rhs right hand side operand for addition
     * @return     result of add
     */
-   public Double3 subtract(Double3 rhs) { return new Double3(d1 - rhs.d1, d2 - rhs.d2, d3 - rhs.d3); }
+   public Double3 subtract(Double3 rhs) {
+      return new Double3(d1 - rhs.d1, d2 - rhs.d2, d3 - rhs.d3);
+   }
 
    /**
     * Scale (multiply) floating point triad by a number into a new triad where
@@ -63,7 +73,9 @@ public record Double3(double d1, double d2, double d3) {
     * @param  rhs right hand side operand for scaling
     * @return     result of scale
     */
-   public Double3 scale(double rhs) { return new Double3(d1 * rhs, d2 * rhs, d3 * rhs); }
+   public Double3 scale(double rhs) {
+      return new Double3(d1 * rhs, d2 * rhs, d3 * rhs);
+   }
 
    /**
     * Reduce (divide) floating point triad by a number into a new triad where each
@@ -71,7 +83,9 @@ public record Double3(double d1, double d2, double d3) {
     * @param  rhs right hand side operand for reducing
     * @return     result of scale
     */
-   public Double3 reduce(double rhs) { return new Double3(d1 / rhs, d2 / rhs, d3 / rhs); }
+   public Double3 reduce(double rhs) {
+      return new Double3(d1 / rhs, d2 / rhs, d3 / rhs);
+   }
 
    /**
     * Product two floating point triads into a new triad where each couple of
@@ -79,7 +93,9 @@ public record Double3(double d1, double d2, double d3) {
     * @param  rhs right hand side operand for product
     * @return     result of product
     */
-   public Double3 product(Double3 rhs) { return new Double3(d1 * rhs.d1, d2 * rhs.d2, d3 * rhs.d3); }
+   public Double3 product(Double3 rhs) {
+      return new Double3(d1 * rhs.d1, d2 * rhs.d2, d3 * rhs.d3);
+   }
 
    /**
     * Checks whether all the numbers are lower than a test number
@@ -87,7 +103,9 @@ public record Double3(double d1, double d2, double d3) {
     * @return   true if all the numbers are less than k, false otherwise
     */
 
-   public boolean lowerThan(double k) { return d1 < k && d2 < k && d3 < k; }
+   public boolean lowerThan(double k) {
+      return d1 < k && d2 < k && d3 < k;
+   }
 
    /**
     * Checks whether all the numbers are lower than three numbers in another triad
@@ -96,5 +114,7 @@ public record Double3(double d1, double d2, double d3) {
     *               other
     *               triad, false otherwise
     */
-   public boolean lowerThan(Double3 other) { return d1 < other.d1 && d2 < other.d2 && d3 < other.d3; }
+   public boolean lowerThan(Double3 other) {
+      return d1 < other.d1 && d2 < other.d2 && d3 < other.d3;
+   }
 }

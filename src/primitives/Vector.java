@@ -4,7 +4,7 @@ package primitives;
  * Class Vector represents a three-dimensional vector in Euclidean space.
  * A vector has a direction and a magnitude.
  * It is defined using a Point as its endpoint relative to the origin.
- * @author Your Name
+ * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Vector extends Point {
 
@@ -104,7 +104,8 @@ public class Vector extends Point {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        return (obj instanceof Vector other) && super.equals(other);
+        return (obj instanceof Vector other)
+                && super.equals(other);
     }
 
     @Override
