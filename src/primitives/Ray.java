@@ -40,4 +40,8 @@ public class Ray {
     public String toString() {
         return "Ray(origin: " + head + ", direction: " + direction + ")";
     }
+
+    public Point getp1() {return head;}
+    public Vector getDirection() {return direction;}
 }
+
