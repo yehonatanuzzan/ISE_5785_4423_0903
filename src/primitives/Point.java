@@ -89,11 +89,6 @@ public class Point {
     }
 
     @Override
-    public int hashCode() {
-        return xyz.hashCode();
-    }
-
-    @Override
     public String toString() {
         return xyz.toString();
     }

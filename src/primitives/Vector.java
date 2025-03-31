@@ -4,12 +4,14 @@ package primitives;
  * Class Vector represents a three-dimensional vector in Euclidean space.
  * A vector has a direction and a magnitude.
  * It is defined using a Point as its endpoint relative to the origin.
+ *
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Vector extends Point {
 
     /**
      * Constructor that receives three coordinates and initializes the vector.
+     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param z Z coordinate
@@ -17,10 +19,11 @@ public class Vector extends Point {
      */
     public Vector(double x, double y, double z) {
         this(new Double3(x, y, z));
-     }
+    }
 
     /**
      * Constructor that receives a Double3 object.
+     *
      * @param xyz A Double3 object representing the vector.
      * @throws IllegalArgumentException if the vector is (0,0,0)
      */
@@ -32,6 +35,7 @@ public class Vector extends Point {
 
     /**
      * Adds two vectors.
+     *
      * @param other Another vector
      * @return A new vector representing the sum.
      */
@@ -41,6 +45,7 @@ public class Vector extends Point {
 
     /**
      * Multiplies the vector by a scalar.
+     *
      * @param scalar The scalar value.
      * @return A new scaled vector.
      */
@@ -50,6 +55,7 @@ public class Vector extends Point {
 
     /**
      * Computes the dot product of this vector and another vector.
+     *
      * @param other Another vector
      * @return The dot product result.
      */
@@ -61,6 +67,7 @@ public class Vector extends Point {
 
     /**
      * Computes the cross product of this vector and another vector.
+     *
      * @param other Another vector
      * @return A new vector that is perpendicular to both.
      */
@@ -74,6 +81,7 @@ public class Vector extends Point {
 
     /**
      * Computes the squared length of the vector.
+     *
      * @return The squared length.
      */
     public double lengthSquared() {
@@ -82,6 +90,7 @@ public class Vector extends Point {
 
     /**
      * Computes the length of the vector.
+     *
      * @return The length.
      */
     public double length() {
@@ -90,6 +99,7 @@ public class Vector extends Point {
 
     /**
      * Normalizes the vector.
+     *
      * @return A new normalized vector.
      */
     public Vector normalize() {

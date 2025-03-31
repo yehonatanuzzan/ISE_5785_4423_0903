@@ -3,6 +3,7 @@ package geometries;
 /**
  * Class RadialGeometry represents geometric bodies that have a radius.
  * It serves as a base class for all radial geometries like spheres and cylinders.
+ *
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public abstract class RadialGeometry extends Geometry {
@@ -10,6 +11,7 @@ public abstract class RadialGeometry extends Geometry {
 
     /**
      * Constructor that initializes the radius of the geometry.
+     *
      * @param radius The radius of the geometry.
      * @throws IllegalArgumentException if the radius is negative.
      */
