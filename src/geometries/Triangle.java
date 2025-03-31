@@ -16,6 +16,6 @@ public class Triangle extends Polygon {
      * @param p3 Third vertex of the triangle.
      */
     public Triangle(Point p1, Point p2, Point p3) {
-        super(p1, p2, p3); // Call the Polygon constructor
+        super(p1, p2, p3);
     }
 }

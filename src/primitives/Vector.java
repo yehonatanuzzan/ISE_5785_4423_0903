@@ -16,10 +16,8 @@ public class Vector extends Point {
      * @throws IllegalArgumentException if the vector is (0,0,0)
      */
     public Vector(double x, double y, double z) {
-        super(x, y, z);
-        if (xyz.equals(Double3.ZERO))
-            throw new IllegalArgumentException("Zero vector is not allowed");
-    }
+        this(new Double3(x, y, z));
+     }
 
     /**
      * Constructor that receives a Double3 object.
@@ -29,7 +27,7 @@ public class Vector extends Point {
     public Vector(Double3 xyz) {
         super(xyz);
         if (xyz.equals(Double3.ZERO))
-            throw new IllegalArgumentException("Zero vector is not allowed");
+            throw new IllegalArgumentException("ZERO vector is not allowed");
     }
 
     /**
@@ -96,25 +94,13 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double len = length();
-        if (len == 0)
-            throw new IllegalArgumentException("Cannot normalize zero vector");
-        return scale(1 / len);
+        return scale(1.0 / len);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        return (obj instanceof Vector other)
-                && super.equals(other);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "->" + super.toString();
+        if (!(obj instanceof Vector other)) return false;
+        return xyz.equals(other.xyz);
     }
 }

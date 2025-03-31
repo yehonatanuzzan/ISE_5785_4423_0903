@@ -7,20 +7,25 @@ import primitives.Vector;
 /**
  * Class Cylinder represents a finite cylinder in 3D space.
  * A cylinder is defined by a central axis (ray), a radius, and a height.
+ *
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Cylinder extends Tube {
-    private final double height; // The height of the cylinder
+    /**
+     * The height of the cylinder
+     */
+    private final double height;
 
     /**
      * Constructor that initializes a cylinder with a given axis, radius, and height.
+     *
      * @param axisRay The central axis of the cylinder.
-     * @param radius The radius of the cylinder.
-     * @param height The height of the cylinder.
+     * @param radius  The radius of the cylinder.
+     * @param height  The height of the cylinder.
      * @throws IllegalArgumentException if the radius or height is negative.
      */
     public Cylinder(Ray axisRay, double radius, double height) {
-        super(axisRay, radius); // Call the parent constructor to set the radius and axis
+        super(axisRay, radius);
         if (height < 0)
             throw new IllegalArgumentException("Height cannot be negative");
         this.height = height;
@@ -28,6 +33,6 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point point) {
-        return null; // To be implemented in the next stage
+        return null;
     }
 }

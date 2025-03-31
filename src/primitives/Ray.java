@@ -22,16 +22,18 @@ public class Ray {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        return (obj instanceof Ray other) &&
-                this.head.equals(other.head) &&
-                this.direction.equals(other.direction);
+    public final boolean equals(Object o) {
+        if(this==o) return true;
+        if (!(o instanceof Ray ray)) return false;
+
+        return head.equals(ray.head) && direction.equals(ray.direction);
     }
 
     @Override
     public int hashCode() {
-        return head.hashCode() + direction.hashCode();
+        int result = head.hashCode();
+        result = 31 * result + direction.hashCode();
+        return result;
     }
 
     @Override

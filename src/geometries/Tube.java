@@ -10,7 +10,7 @@ import primitives.Vector;
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Tube extends RadialGeometry {
-    protected final Ray axisRay; // The central axis of the tube
+    protected final Ray axisRay;
 
     /**
      * Constructor that initializes a tube with a given axis and radius.
@@ -19,12 +19,12 @@ public class Tube extends RadialGeometry {
      * @throws IllegalArgumentException if the radius is negative.
      */
     public Tube(Ray axisRay, double radius) {
-        super(radius); // Call the parent constructor to set the radius
+        super(radius);
         this.axisRay = axisRay;
     }
 
     @Override
     public Vector getNormal(Point point) {
-        return null; // To be implemented in the next stage
+        return null;
     }
 }

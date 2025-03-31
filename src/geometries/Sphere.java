@@ -9,7 +9,7 @@ import primitives.Vector;
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Sphere extends RadialGeometry {
-    private final Point center; // The center point of the sphere
+    private final Point center;
 
     /**
      * Constructor that initializes a sphere with a given center and radius.
@@ -18,12 +18,12 @@ public class Sphere extends RadialGeometry {
      * @throws IllegalArgumentException if the radius is negative.
      */
     public Sphere(Point center, double radius) {
-        super(radius); // Call the parent constructor to set the radius
+        super(radius);
         this.center = center;
     }
 
     @Override
     public Vector getNormal(Point point) {
-        return null; // Will be implemented in the next stages
+        return null;
     }
 }

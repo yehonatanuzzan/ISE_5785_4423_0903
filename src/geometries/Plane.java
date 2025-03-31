@@ -21,7 +21,7 @@ public class Plane extends Geometry {
      */
     public Plane(Point p1, Point p2, Point p3) {
         q0 = p1;
-        normal = null; // Per the instructions, we don't compute the normal yet
+        normal = null;
     }
 
     /**
@@ -32,15 +32,14 @@ public class Plane extends Geometry {
      */
     public Plane(Point q0, Vector normal) {
         this.q0 = q0;
-        this.normal = normal.normalize(); // Ensure the normal is stored as a unit vector
+        this.normal = normal.normalize();
     }
 
     @Override
-    public Vector getNormal(Point point) {
-        return normal; // Return the stored normal vector
-    }
-
-    public Vector getNormal() {
-        return normal; // Return the stored normal vector
+    /**
+     * return the stored normal vector
+     */
+    public Vector getNormal(Point dummy) {
+        return normal;
     }
 }
