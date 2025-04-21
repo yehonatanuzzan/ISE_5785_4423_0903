@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Class Plane represents a plane in 3D space.
@@ -44,4 +47,24 @@ public class Plane extends Geometry {
      */
     public Vector getNormal(Point point) {
         return normal;
-    }}
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // Calculate the denominator for the intersection point
+        double denominator = normal.dotProduct(ray.getDirection());
+        if (denominator == 0) {
+            return null;
+        }
+
+        // Calculate the numerator for the intersection point
+        double t = (normal.dotProduct(q0.subtract(ray.getp1()))) / denominator;
+        if (t < 0) {
+            return null;
+        }
+
+        // Calculate the intersection point
+        Point intersectionPoint = ray.getp1().add(ray.getDirection().scale(t));
+        return List.of(intersectionPoint);
+    }
+}

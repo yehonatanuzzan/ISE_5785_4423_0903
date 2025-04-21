@@ -72,4 +72,17 @@ class TubeTest {
 
         assertNotNull(normal, "Normal should be computed even for edge cases.");
     }
+
+    public tesrFindIntersection() {
+        // Create a tube with a specific radius and axis ray
+        Tube tube = new Tube(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0);
+
+        // Test case: Point on the surface of the Tube
+        Point pointOnTheSurface = new Point(1, 2, 0);
+        Vector theExpectedNormal = new Vector(1, 0, 0).normalize();
+        Vector actualNormal = tube.getNormal(pointOnTheSurface);
+
+        // Assert that the calculated normal is as expected
+        assertEquals(theExpectedNormal, actualNormal, "Normal computation is incorrect.");
+    }
 }

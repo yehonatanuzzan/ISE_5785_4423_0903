@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
@@ -79,6 +80,29 @@ public class Polygon extends Geometry {
    }
 
    @Override
-   public Vector getNormal(Point point) { return plane.getNormal(point); }
+   public Vector getNormal(Point point) {
+      return plane.getNormal(point);
+   }
 
+   @Override
+   public List<Point> findIntersections(Ray ray) {
+        // Check if the ray is parallel to the plane
+        List<Point> intersections = plane.findIntersections(ray);
+        if (intersections == null) {
+             return null;
+        }
+
+        // Check if the intersection point is inside the polygon
+        Point intersectionPoint = intersections.get(0);
+        Vector v1, v2;
+        for (int i = 0; i < size; i++) {
+             v1 = vertices.get(i).subtract(intersectionPoint);
+             v2 = vertices.get((i + 1) % size).subtract(intersectionPoint);
+             if (v1.crossProduct(v2).dotProduct(plane.getNormal(null)) < 0) {
+                return null; // Intersection point is outside the polygon
+             }
+        }
+
+        return List.of(intersectionPoint); // Return the intersection point
+   }
 }

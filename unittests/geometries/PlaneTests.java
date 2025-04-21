@@ -101,4 +101,17 @@ class PlaneTest {
                 "Exception expected for invalid plane construction");
     }
 
+    public testFindIntersection() {
+        // Create a plane and a ray
+        Plane plane = new Plane(new Point(0, 0, 0), new Vector(0, 1, 0));
+        Ray ray = new Ray(new Point(1, 1, 1), new Vector(0, -1, 0));
+
+        // Find the intersection point
+        List<Point> intersections = plane.findIntersections(ray);
+
+        // Check that the intersection point is correct
+        assertEquals(1, intersections.size(), "Expected one intersection point");
+        assertEquals(new Point(1, 0, 1), intersections.get(0), "Intersection point is incorrect");
+    }
+
 }

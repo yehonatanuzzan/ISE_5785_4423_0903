@@ -66,4 +66,17 @@ class CylinderTests {
         Vector expectedTopNormal = new Vector(0, 1, 0);
         assertEquals(expectedTopNormal, cylinder.getNormal(pointOnTopBase), "ERROR: Normal on top base is incorrect.");
     }
+
+    void testFindIntersection() {
+        // Create a cylinder with radius 1 and height 5
+        Cylinder cylinder = new Cylinder(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0, 5.0);
+
+        // Test case: Ray intersects the cylinder
+        Ray ray = new Ray(new Point(2, 2, 2), new Vector(-1, -1, -1));
+        assertTrue(cylinder.findIntersections(ray).size() > 0, "ERROR: Ray should intersect the cylinder.");
+
+        // Test case: Ray does not intersect the cylinder
+        Ray rayNoIntersection = new Ray(new Point(3, 3, 3), new Vector(1, 1, 1));
+        assertTrue(cylinder.findIntersections(rayNoIntersection).isEmpty(), "ERROR: Ray should not intersect the cylinder.");
+    }
 }

@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Class Sphere represents a three-dimensional sphere in space.
@@ -38,5 +41,35 @@ public class Sphere extends RadialGeometry {
         }
         Vector vector = point.subtract(center);
         return vector.normalize();
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // Calculate the vector from the center of the sphere to the ray's origin
+        Vector L = ray.getp1().subtract(center);
+        double tca = L.dotProduct(ray.getDirection());
+        double d2 = L.dotProduct(L) - tca * tca;
+        double radius2 = radius * radius;
+
+        // Check if the ray is outside the sphere
+        if (d2 > radius2) {
+            return null; // No intersection
+        }
+
+        double thc = Math.sqrt(radius2 - d2);
+        double t0 = tca - thc;
+        double t1 = tca + thc;
+
+        // If t0 is negative, use t1 instead
+        if (t0 < 0) {
+            t0 = t1;
+            if (t0 < 0) {
+                return null; // No intersection
+            }
+        }
+
+        // Calculate the intersection points
+        Point intersectionPoint = ray.getp1().add(ray.getDirection().scale(t0));
+        return List.of(intersectionPoint);
     }
 }

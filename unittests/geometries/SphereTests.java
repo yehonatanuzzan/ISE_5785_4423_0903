@@ -71,4 +71,25 @@ class SphereTest {
         // Assert that the calculated normal matches the expected normal
         assertEquals(expectedNormal, actualNormal, "Normal vector is incorrect at top of the sphere.");
     }
+
+    void testFindIntersection() {
+        // Create a sphere with center at (0, 0, 0) and radius 1
+        Sphere sphere = new Sphere(new Point(0, 0, 0), 1);
+
+        // Test case: Ray intersects the sphere
+        Ray ray1 = new Ray(new Point(0, 0, -2), new Vector(0, 0, 1));
+        List<Point> intersections1 = sphere.findIntersections(ray1);
+        assertEquals(2, intersections1.size(), "Ray should intersect the sphere at two points.");
+
+        // Test case: Ray is tangent to the sphere
+        Ray ray2 = new Ray(new Point(1, 0, 0), new Vector(0, 1, 0));
+        List<Point> intersections2 = sphere.findIntersections(ray2);
+        assertEquals(1, intersections2.size(), "Ray should be tangent to the sphere.");
+
+        // Test case: Ray does not intersect the sphere
+        Ray ray3 = new Ray(new Point(2, 2, 2), new Vector(1, 1, 1));
+        List<Point> intersections3 = sphere.findIntersections(ray3);
+        assertNull(intersections3, "Ray should not intersect the sphere.");
+    }
+
 }

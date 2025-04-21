@@ -8,7 +8,7 @@ import primitives.Vector;
  * All geometric objects must implement the getNormal method.
  * @author Yehonatan Uzzan and Oz Dahari
  */
-public abstract class Geometry {
+public abstract class Geometry implements Intersectable {
 
     /**
      * Returns the normal vector to the geometry at a given point.

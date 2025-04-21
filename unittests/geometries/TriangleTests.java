@@ -70,4 +70,14 @@ class TriangleTest {
         // Assert that the normal is calculated for an edge case
         assertNotNull(normal, "Normal should be computed for edge case points.");
     }
+
+    public testFind1intersections() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Triangle is parallel to ray
+        Triangle triangle = new Triangle(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0));
+        Ray ray = new Ray(new Point(0, 0, 2), new Vector(1, 1, 1));
+        List<Point> result = triangle.findIntersections(ray);
+        assertEquals(1, result.size(), "Wrong number of intersection points");
+        assertEquals(new Point(0.5, 0.5, 0), result.get(0), "Incorrect intersection point");
+    }
 }

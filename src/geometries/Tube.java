@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 /**
  * Class Tube represents a three-dimensional infinite tube in space.
  * A tube is defined by a central axis (ray) and a radius.
@@ -46,4 +48,31 @@ public class Tube extends RadialGeometry {
     return p.subtract(projection).normalize();
 }
 
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // Calculate the vector from the center of the tube to the ray's origin
+        Vector L = ray.getp1().subtract(axisRay.getp1());
+        double tca = L.dotProduct(axisRay.getDirection());
+        double d2 = L.dotProduct(L) - tca * tca;
+        double radius2 = radius * radius;
+
+        // Check if the ray is outside the tube
+        if (d2 > radius2) {
+            return null; // No intersection
+        }
+
+        double thc = Math.sqrt(radius2 - d2);
+        double t0 = tca - thc;
+        double t1 = tca + thc;
+
+        if (t0 < 0 && t1 < 0) {
+            return null; // Both intersections are behind the ray
+        }
+
+        if (t0 < 0) {
+            return List.of(ray.getp1().add(ray.getDirection().scale(t1)));
+        } else {
+            return List.of(ray.getp1().add(ray.getDirection().scale(t0)));
+        }
+    }
 }

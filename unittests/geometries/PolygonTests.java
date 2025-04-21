@@ -115,4 +115,29 @@ class PolygonTests {
             assertEquals(0d, result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])), 1e-10,
                     "Polygon's normal is not orthogonal to one of the edges");
     }
+
+    public testFindIntersections() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Ray intersects the polygon
+        Polygon polygon = new Polygon(
+                new Point(0, 0, 1),
+                new Point(1, 0, 0),
+                new Point(0, 1, 0),
+                new Point(-1, 1, 1));
+        Ray ray = new Ray(new Point(0.5, 0.5, 2), new Vector(0, 0, -1));
+        List<Point> intersections = polygon.findIntersections(ray);
+        assertEquals(1, intersections.size(), "Incorrect number of intersections");
+        assertEquals(new Point(0.5, 0.5, 0), intersections.get(0), "Incorrect intersection point");
+
+        // TC02: Ray does not intersect the polygon
+        ray = new Ray(new Point(2, 2, 2), new Vector(0, 0, -1));
+        intersections = polygon.findIntersections(ray);
+        assertNull(intersections, "Expected no intersections");
+
+        // TC03: Ray is tangent to the polygon
+        ray = new Ray(new Point(0.5, 0.5, 2), new Vector(1, 1, -1));
+        intersections = polygon.findIntersections(ray);
+        assertNull(intersections, "Expected no intersections");
+    }
+
 }
