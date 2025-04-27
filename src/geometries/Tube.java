@@ -9,7 +9,6 @@ import primitives.Vector;
  * A tube is defined by a central axis (ray) and a radius.
  * @author Yehonatan Uzzan and Oz Dahari
  */
-
 public class Tube extends RadialGeometry {
     protected final Ray axisRay;
 
@@ -23,27 +22,9 @@ public class Tube extends RadialGeometry {
         super(radius);
         this.axisRay = axisRay;
     }
-    private boolean isZero(double num) {
-        return Math.abs(num) < 1e-10;
-    }
 
     @Override
-    public Vector getNormal(Point p) {
-    Point P0 = axisRay.getp1();
-    Vector v = axisRay.getDirection();
-    Vector P0_P = p.subtract(P0);
-
-    double t = v.dotProduct(P0_P);
-
-    if (isZero(t)) {
-        return P0_P.normalize();
+    public Vector getNormal(Point point) {
+        return null;
     }
-
-    Point projection = P0.add(v.scale(t));
-    if (p.equals(projection)) {
-        throw new IllegalArgumentException("ERROR: The projection of a tube is incorrect");
-    }
-    return p.subtract(projection).normalize();
-}
-
 }
