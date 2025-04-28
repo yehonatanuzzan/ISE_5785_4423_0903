@@ -14,29 +14,47 @@ import primitives.*;
 
 /**
  * Test program for the 1st stage
+ *
  * @author Dan Zilberstein
  */
 public final class Main {
-    /** A point for tests at (1,2,3) */
+    /**
+     * A point for tests at (1,2,3)
+     */
     private static final Point P1 = new Point(1, 2, 3);
-    /** A point for tests at (2,4,6) */
+    /**
+     * A point for tests at (2,4,6)
+     */
     private static final Point P2 = new Point(2, 4, 6);
-    /** A point for tests at (2,4,5) */
+    /**
+     * A point for tests at (2,4,5)
+     */
     private static final Point P3 = new Point(2, 4, 5);
 
-    /** A vector for tests to (1,2,3) */
+    /**
+     * A vector for tests to (1,2,3)
+     */
     private static final Vector V1 = new Vector(1, 2, 3);
-    /** A vector for tests to (-1,-2,-3) (opposite to V1) */
+    /**
+     * A vector for tests to (-1,-2,-3) (opposite to V1)
+     */
     private static final Vector V1_OPPOSITE = new Vector(-1, -2, -3);
-    /** A vector for tests to (-2,-4,-6) */
+    /**
+     * A vector for tests to (-2,-4,-6)
+     */
     private static final Vector V2 = new Vector(-2, -4, -6);
-    /** A vector for tests to (0,3,-2) */
+    /**
+     * A vector for tests to (0,3,-2)
+     */
     private static final Vector V3 = new Vector(0, 3, -2);
-    /** A vector for tests to (1,2,2) */
+    /**
+     * A vector for tests to (1,2,2)
+     */
     private static final Vector V4 = new Vector(1, 2, 2);
 
     /**
      * Main program to tests initial functionality of the 1st stage
+     *
      * @param args irrelevant here
      */
     public static void main(String[] args) {

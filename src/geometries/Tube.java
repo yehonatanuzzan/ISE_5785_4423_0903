@@ -7,6 +7,7 @@ import primitives.Vector;
 /**
  * Class Tube represents a three-dimensional infinite tube in space.
  * A tube is defined by a central axis (ray) and a radius.
+ *
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Tube extends RadialGeometry {
@@ -14,8 +15,9 @@ public class Tube extends RadialGeometry {
 
     /**
      * Constructor that initializes a tube with a given axis and radius.
+     *
      * @param axisRay The central axis of the tube.
-     * @param radius The radius of the tube.
+     * @param radius  The radius of the tube.
      * @throws IllegalArgumentException if the radius is negative.
      */
     public Tube(Ray axisRay, double radius) {

@@ -6,6 +6,7 @@ import primitives.Vector;
 /**
  * Class Sphere represents a three-dimensional sphere in space.
  * A sphere is defined by a center point and a radius.
+ *
  * @author Yehonatan Uzzan and Oz Dahari
  */
 public class Sphere extends RadialGeometry {
@@ -13,6 +14,7 @@ public class Sphere extends RadialGeometry {
 
     /**
      * Constructor that initializes a sphere with a given center and radius.
+     *
      * @param center The center point of the sphere.
      * @param radius The radius of the sphere.
      * @throws IllegalArgumentException if the radius is negative.

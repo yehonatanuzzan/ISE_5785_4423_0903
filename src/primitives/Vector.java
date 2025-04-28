@@ -107,6 +107,7 @@ public class Vector extends Point {
         return scale(1.0 / len);
     }
 
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
