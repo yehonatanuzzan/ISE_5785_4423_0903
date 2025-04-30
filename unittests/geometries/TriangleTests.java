@@ -70,4 +70,8 @@ class TriangleTest {
         // Assert that the normal is calculated for an edge case
         assertNotNull(normal, "Normal should be computed for edge case points.");
     }
+
+    @Test
+    void testFindIntersections() {
+    }
 }

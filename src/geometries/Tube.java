@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 /**
  * Class Tube represents a three-dimensional infinite tube in space.
  * A tube is defined by a central axis (ray) and a radius.
@@ -27,6 +29,11 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point point) {
+        return null;
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
         return null;
     }
 }

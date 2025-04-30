@@ -34,7 +34,15 @@ public class Camera implements Cloneable {
     ;
 
     public Ray constructRay(int nX, int nY, int j, int i) {
-        return null;
+        double rX = width / nX;
+        double rY = height / nY;
+        double yI = (-1) * (i - (nY-1) / 2.0) * rY;
+        double xJ = (j - (nX-1) / 2.0) * rX;
+        Point pIJ = position.add(vTo.scale(distance));
+        if (!isZero(xJ)) pIJ = pIJ.add(vRight.scale(xJ));
+        if (!isZero(yI)) pIJ = pIJ.add(vUp.scale(yI));
+
+        return new Ray(position,pIJ.subtract(position));
 
     }
 
@@ -43,7 +51,7 @@ public class Camera implements Cloneable {
     public static class Builder {
         final private Camera camera = new Camera();
         private Point pDirection = null;
-        private Builder setLocation(Point p) {
+        public Builder setLocation(Point p) {
             camera.position = p;
             return this;
         }
@@ -51,7 +59,7 @@ public class Camera implements Cloneable {
         ;
 
 
-        private Builder setDirection(Vector vTo, Vector vUp) {
+        public Builder setDirection(Vector vTo, Vector vUp) {
             if (isZero(vTo.dotProduct(vUp))) {
                 camera.vTo = vTo.normalize();
                 camera.vUp = vUp.normalize();
@@ -63,7 +71,7 @@ public class Camera implements Cloneable {
 
         ;
 
-        private Builder setDirection(Point pTarget, Vector vUp) {
+        public Builder setDirection(Point pTarget, Vector vUp) {
             this.pDirection = pTarget;
             camera.vUp = vUp.normalize();
             return this;
@@ -147,7 +155,6 @@ public class Camera implements Cloneable {
 
             calculateDirections();
 
-            camera.viewPlaneCenter = camera.position.add(camera.vTo.scale(camera.distance));
             try {
                 return (Camera) camera.clone();
             } catch (CloneNotSupportedException e) {

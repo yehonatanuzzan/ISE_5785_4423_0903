@@ -21,6 +21,10 @@ public class Vector extends Point {
         this(new Double3(x, y, z));
     }
 
+    public static final Vector UNIT_X = new Vector(1,0,0);
+    public static final Vector UNIT_Y = new Vector(0,1,0);
+    public static final Vector UNIT_Z = new Vector(0,0,1);
+
     /**
      * Constructor that receives a Double3 object.
      *

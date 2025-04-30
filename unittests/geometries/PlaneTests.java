@@ -3,7 +3,10 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Unit tests for the {@link Plane} class.
@@ -101,4 +104,8 @@ class PlaneTest {
                 "Exception expected for invalid plane construction");
     }
 
+
+    @Test
+    void testFindIntersections() {
+    }
 }
