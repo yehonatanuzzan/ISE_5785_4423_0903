@@ -115,4 +115,6 @@ class PolygonTests {
             assertEquals(0d, result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])), 1e-10,
                     "Polygon's normal is not orthogonal to one of the edges");
     }
+
+
 }

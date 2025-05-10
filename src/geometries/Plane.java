@@ -6,6 +6,9 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * Class Plane represents a plane in 3D space.
  * A plane is defined by a point on the plane and a normal vector.
@@ -49,8 +52,45 @@ public class Plane extends Geometry {
         return normal;
     }
 
+    /**
+     * Finds the intersection point(s) between the plane and a given ray.
+     *
+     * <p>If the ray is parallel to the plane, lies in the plane, or points away from it,
+     * there will be no intersection (returns null). Otherwise, returns a list containing
+     * the single intersection point.</p>
+     *
+     * @param ray the ray to intersect with the plane
+     * @return a list containing the intersection point, or null if there is no intersection
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        Point p0 = ray.getp1();
+        Vector dir = ray.getDirection();
+
+        double numerator;
+        try {
+            numerator = normal.dotProduct(q0.subtract(p0));
+        } catch (IllegalArgumentException e) {
+            // Ray origin is on the plane point (Q == P0)
+            return null;
+        }
+
+        double denominator = normal.dotProduct(dir);
+
+        // Ray is parallel to the plane
+        if (isZero(denominator)) {
+            return null;
+        }
+
+        double t = alignZero(numerator / denominator);
+
+        // No intersection: the ray points away from the plane or lies in the plane
+        if (t <= 0) {
+            return null;
+        }
+
+        Point intersection = ray.getPoint(t);
+        return List.of(intersection);
     }
+
 }

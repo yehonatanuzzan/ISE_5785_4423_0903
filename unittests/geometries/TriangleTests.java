@@ -2,7 +2,10 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,5 +76,43 @@ class TriangleTest {
 
     @Test
     void testFindIntersections() {
+        Triangle triangle = new Triangle(
+                new Point(0, 0, 1),
+                new Point(1, 0, 0),
+                new Point(0, 1, 0)
+        );
+
+        // ============ Equivalence Partitions Tests ==============
+
+        // TC01: Ray inside the triangle
+        Ray ray1 = new Ray(new Point(-1, -1, -1), new Vector(1, 1, 2));
+        List<Point> result1 = triangle.findIntersections(ray1);
+        assertNotNull(result1, "Expected intersection inside triangle");
+        assertEquals(1, result1.size(), "Wrong number of points");
+        assertEquals(new Point(0.25, 0.25, 0.5), result1.get(0), "Wrong intersection point");
+
+        // TC02: Ray outside against edge
+        Ray ray2 = new Ray(new Point(-1, -1, -1), new Vector(2, 1, 2));
+        assertNull(triangle.findIntersections(ray2), "Expected no intersection (outside against edge)");
+
+        // TC03: Ray outside against vertex
+        Ray ray3 = new Ray(new Point(-1, -1, -1), new Vector(1, 2, 2));
+        assertNull(triangle.findIntersections(ray3), "Expected no intersection (outside against vertex)");
+
+        // =============== Boundary Values Tests ==================
+
+        // TC04: Ray on edge
+        Ray ray4 = new Ray(new Point(-1, -1, -1), new Vector(1, 1, 1));
+        assertNull(triangle.findIntersections(ray4), "Expected no intersection (on edge)");
+
+        // TC05: Ray in vertex
+        Ray ray5 = new Ray(new Point(-1, -1, -1), new Vector(1, 1, 0));
+        assertNull(triangle.findIntersections(ray5), "Expected no intersection (in vertex)");
+
+        // TC06: Ray on edge's continuation
+        Ray ray6 = new Ray(new Point(-1, -1, -1), new Vector(3, 3, 1));
+        assertNull(triangle.findIntersections(ray6), "Expected no intersection (on edge's continuation)");
     }
+
+
 }

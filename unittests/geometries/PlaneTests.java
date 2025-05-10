@@ -107,5 +107,44 @@ class PlaneTest {
 
     @Test
     void testFindIntersections() {
+        Plane plane = new Plane(
+                new Point(0, 0, 1),
+                new Point(1, 0, 1),
+                new Point(0, 1, 1)
+        );
+
+        // ============ Equivalence Partitions Tests ==============
+
+        // TC01: Ray intersects the plane
+        Ray ray1 = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+        List<Point> result1 = plane.findIntersections(ray1);
+        assertNotNull(result1, "Expected intersection with the plane");
+        assertEquals(1, result1.size(), "Wrong number of points");
+        assertEquals(new Point(0, 0, 1), result1.get(0), "Wrong intersection point");
+
+        // TC02: Ray does not intersect the plane (parallel and outside)
+        Ray ray2 = new Ray(new Point(0, 0, 0), new Vector(1, 0, 0));
+        assertNull(plane.findIntersections(ray2), "Expected no intersection (ray parallel to plane)");
+
+        // =============== Boundary Values Tests ==================
+
+        // TC03: Ray is orthogonal to the plane and starts before
+        Ray ray3 = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+        List<Point> result3 = plane.findIntersections(ray3);
+        assertNotNull(result3, "Expected intersection (orthogonal and before)");
+        assertEquals(new Point(0, 0, 1), result3.get(0), "Wrong intersection point");
+
+        // TC04: Ray is orthogonal to the plane and starts in the plane
+        Ray ray4 = new Ray(new Point(0, 0, 1), new Vector(0, 0, 1));
+        assertNull(plane.findIntersections(ray4), "Expected no intersection (ray starts in the plane)");
+
+        // TC05: Ray is orthogonal to the plane and starts after the plane
+        Ray ray5 = new Ray(new Point(0, 0, 2), new Vector(0, 0, 1));
+        assertNull(plane.findIntersections(ray5), "Expected no intersection (starts after plane)");
+
+        // TC06: Ray is parallel and lies in the plane
+        Ray ray6 = new Ray(new Point(0, 0, 1), new Vector(1, 1, 0));
+        assertNull(plane.findIntersections(ray6), "Expected no intersection (ray lies in plane)");
     }
+
 }
