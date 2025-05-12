@@ -2,171 +2,156 @@ package renderer;
 
 import primitives.*;
 
-import java.util.MissingResourceException;
-
-import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
-
 /**
- * @author yehonatanuzzan
+ * Camera class represents a basic camera in a 3D scene.
+ * The camera is defined by:
+ * <ul>
+ *     <li>A point in space - the camera position</li>
+ *     <li>Direction vectors: vTo (forward), vUp (up), and vRight (right)</li>
+ *     <li>View plane parameters: width, height, and distance from the camera</li>
+ * </ul>
  */
+public class Camera {
 
-public class Camera implements Cloneable {
+    private final Point p0;
+    private final Vector vTo;
+    private final Vector vUp;
+    private final Vector vRight;
+    private double width = 1;
+    private double height = 1;
+    private double distance = 1;
 
-    private Point position;
-    private Vector vTo;
-    private Vector vUp;
-    private Vector vRight;
-    private double width = 0;
-    private double height = 0;
-    private double distance = 0;
-
-    private Camera() {
-    }
-
-    ;
-
-    public static Builder getBuilder() {
-        return null;
-    }
-
-    ;
-
-    public Ray constructRay(int nX, int nY, int j, int i) {
-        double rX = width / nX;
-        double rY = height / nY;
-        double yI = (-1) * (i - (nY-1) / 2.0) * rY;
-        double xJ = (j - (nX-1) / 2.0) * rX;
-        Point pIJ = position.add(vTo.scale(distance));
-        if (!isZero(xJ)) pIJ = pIJ.add(vRight.scale(xJ));
-        if (!isZero(yI)) pIJ = pIJ.add(vUp.scale(yI));
-
-        return new Ray(position,pIJ.subtract(position));
-
-    }
-
-    ;
-
+    /**
+     * Builder class for {@link Camera}.
+     */
     public static class Builder {
-        final private Camera camera = new Camera();
-        private Point pDirection = null;
-        public Builder setLocation(Point p) {
-            camera.position = p;
-            return this;
-        }
+        private final Point p0;
+        private final Vector vTo;
+        private final Vector vUp;
+        private Camera camera;
 
-        ;
-
-
-        public Builder setDirection(Vector vTo, Vector vUp) {
-            if (isZero(vTo.dotProduct(vUp))) {
-                camera.vTo = vTo.normalize();
-                camera.vUp = vUp.normalize();
-            } else {
-                throw new IllegalArgumentException("Direction must be orthogonal");
+        /**
+         * Builder constructor that receives the camera position and two direction vectors.
+         *
+         * @param p0  the position of the camera
+         * @param vTo the direction to look at
+         * @param vUp the up direction
+         */
+        public Builder(Point p0, Vector vTo, Vector vUp) {
+            if (!isZero(vTo.dotProduct(vUp))) {
+                throw new IllegalArgumentException("vTo and vUp are not orthogonal");
             }
-            return this;
+            this.p0 = p0;
+            this.vTo = vTo.normalize();
+            this.vUp = vUp.normalize();
+            this.camera = new Camera(this);
         }
 
-        ;
-
-        public Builder setDirection(Point pTarget, Vector vUp) {
-            this.pDirection = pTarget;
-            camera.vUp = vUp.normalize();
-            return this;
-        }
-
-        ;
-
-        public Builder setDirection(Point pTarget) {
-            this.pDirection = pTarget;
-            camera.vUp = new Vector(0, 1, 0);
-            return this;
-        }
-
-        ;
-
-        public Builder setVpSize(double width, double height) {
+        /**
+         * Set the size of the view plane.
+         *
+         * @param width  the width of the view plane
+         * @param height the height of the view plane
+         * @return the builder itself
+         */
+        public Builder setVPSize(double width, double height) {
             camera.width = width;
             camera.height = height;
             return this;
-
         }
 
-        ;
-
-        public Builder setVpDistance(double distance) {
+        /**
+         * Set the distance between the camera and the view plane.
+         *
+         * @param distance the distance from the camera to the view plane
+         * @return the builder itself
+         */
+        public Builder setVPDistance(double distance) {
             camera.distance = distance;
             return this;
         }
 
-        ;
-
-        public Builder setResolution(int nX, int nY) {
-            return this;
-        }
-
-        ;
-
-        private void calculateDirections() {
-            if (camera.vUp == null) {
-                throw new MissingResourceException("missing render resource", "Camera", "directions");
-            }
-
-            if (camera.vTo != null && pDirection == null) {
-                camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
-                return;
-            }
-
-            if (pDirection == null) {
-                throw new MissingResourceException("missing render resource", "Camera", "directions");
-            }
-
-            try {
-                camera.vTo = pDirection.subtract(camera.position).normalize();
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Camera position and target point must not be the same");
-            }
-
-            try {
-                camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Camera's up direction must not be parallel to its viewing direction");
-            }
-
-            // Recalculate vUp to ensure it is orthogonal to both vTo and vRight
-            camera.vUp = camera.vRight.crossProduct(camera.vTo).normalize();
-        }
-
+        /**
+         * Build the camera.
+         *
+         * @return the constructed camera
+         */
         public Camera build() {
-            if (camera.position == null) {
-                throw new MissingResourceException("missing render resource", "Camera", "location (position)");
-            }
-            if (alignZero(camera.width) <= 0) {
-                throw new MissingResourceException("missing render resource", "Camera", "view plane width");
-            }
-            if (alignZero(camera.height) <= 0) {
-                throw new MissingResourceException("missing render resource", "Camera", "view plane height");
-            }
-            if (alignZero(camera.distance) <= 0) {
-                throw new MissingResourceException("missing render resource", "Camera", "distance from view plane");
-            }
+            return camera;
+        }
+    }
 
-            calculateDirections();
+    /**
+     * Private constructor to enforce builder pattern.
+     *
+     * @param builder the builder object
+     */
+    private Camera(Builder builder) {
+        this.p0 = builder.p0;
+        this.vTo = builder.vTo;
+        this.vUp = builder.vUp;
+        this.vRight = vTo.crossProduct(vUp).normalize();
+    }
 
-            try {
-                return (Camera) camera.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new RuntimeException(e);
-            }
+    /**
+     * Constructs a ray from the camera through the specified pixel on the view plane.
+     *
+     * @param nX number of pixels in X direction
+     * @param nY number of pixels in Y direction
+     * @param j  pixel column index (0-based)
+     * @param i  pixel row index (0-based)
+     * @return the constructed ray through the given pixel
+     */
+    public Ray constructRay(int nX, int nY, int j, int i) {
+        Point pc = p0.add(vTo.scale(distance));
+
+        double rY = height / nY;
+        double rX = width / nX;
+
+        double xJ = (j - (nX - 1) / 2.0) * rX;
+        double yI = - (i - (nY - 1) / 2.0) * rY;
+
+        Point pij = pc;
+        if (!isZero(xJ)) {
+            pij = pij.add(vRight.scale(xJ));
+        }
+        if (!isZero(yI)) {
+            pij = pij.add(vUp.scale(yI));
         }
 
-        ;
-
+        Vector dir = pij.subtract(p0);
+        return new Ray(p0, dir);
     }
 
 
+    // Getters
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getVTo() {
+        return vTo;
+    }
+
+    public Vector getVUp() {
+        return vUp;
+    }
+
+    public Vector getVRight() {
+        return vRight;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
 }
-
-

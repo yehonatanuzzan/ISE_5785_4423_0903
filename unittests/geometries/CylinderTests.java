@@ -5,78 +5,80 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the {@link Cylinder} class.
- * The tests verify the correctness of the normal vector calculations for different parts of the cylinder.
+ * These tests verify the correctness of the normal vector and intersections on different parts of the cylinder.
  * <p>
- * The tests include:
+ * Includes tests for:
  * <ul>
- *     <li>Checking the normal vector on the curved surface of the cylinder.</li>
- *     <li>Checking the normal vector on the bottom base of the cylinder.</li>
- *     <li>Checking the normal vector on the top base of the cylinder.</li>
- * </ul>
- * </p>
- * The normal vector should be:
- * <ul>
- *     <li>Perpendicular to the cylinder's surface at any given point.</li>
- *     <li>Pointing outward from the surface.</li>
- *     <li>Normalized to a unit length.</li>
+ *     <li>Normal on side, bottom base, top base</li>
+ *     <li>Intersection with side, bases, and special edge cases</li>
  * </ul>
  * </p>
  * @author Yehonatan Uzzan and Oz Dahari
  */
 class CylinderTests {
 
-    /**
-     * Test method for {@link Cylinder#getNormal(Point)}.
-     * <p>
-     * This test checks:
-     * <ul>
-     *     <li>That the normal vector is correct on the curved surface.</li>
-     *     <li>That the normal vector is correct on the bottom base.</li>
-     *     <li>That the normal vector is correct on the top base.</li>
-     * </ul>
-     * </p>
-     * The expected behavior:
-     * <ul>
-     *     <li>For a point on the curved surface, the normal is perpendicular to the axis and points outward.</li>
-     *     <li>For a point on the bottom base, the normal points downward (negative y-axis).</li>
-     *     <li>For a point on the top base, the normal points upward (positive y-axis).</li>
-     * </ul>
-     */
     @Test
     void testGetNormal() {
-        // Create a cylinder with radius 1 and height 5
-        Cylinder cylinder = new Cylinder(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0, 5.0);
+        Cylinder cylinder = new Cylinder(new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 1.0, 2.0);
 
-        // Check normal on the cylinder surface
-        Point pointOnSide = new Point(1, 2, 0);
-        Vector expectedNormal = new Vector(1, 0, 0).normalize();
-        assertEquals(expectedNormal, cylinder.getNormal(pointOnSide), "ERROR: Normal on the side is incorrect.");
+        // Side surface
+        assertEquals(new Vector(1, 0, 0), cylinder.getNormal(new Point(1, 0, 1)), "Wrong normal for side surface");
 
-        // Check normal on the bottom base
-        Point pointOnBottomBase = new Point(0.5, 0, 0.5);
-        Vector expectedBottomNormal = new Vector(0, -1, 0);
-        assertEquals(expectedBottomNormal, cylinder.getNormal(pointOnBottomBase), "ERROR: Normal on bottom base is incorrect.");
+        // Bottom base
+        assertEquals(new Vector(0, 0, -1), cylinder.getNormal(new Point(0.5, 0.5, 0)), "Wrong normal for bottom base");
 
-        // Check normal on the top base
-        Point pointOnTopBase = new Point(0.5, 5, 0.5);
-        Vector expectedTopNormal = new Vector(0, 1, 0);
-        assertEquals(expectedTopNormal, cylinder.getNormal(pointOnTopBase), "ERROR: Normal on top base is incorrect.");
+        // Top base
+        assertEquals(new Vector(0, 0, 1), cylinder.getNormal(new Point(0.5, 0.5, 2)), "Wrong normal for top base");
     }
 
-    void testFindIntersection() {
-        // Create a cylinder with radius 1 and height 5
-        Cylinder cylinder = new Cylinder(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0, 5.0);
+    @Test
+    void testFindIntersections() {
+        Cylinder cylinder = new Cylinder(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0, 2.0);
 
-        // Test case: Ray intersects the cylinder
-        Ray ray = new Ray(new Point(2, 2, 2), new Vector(-1, -1, -1));
-        assertTrue(cylinder.findIntersections(ray).size() > 0, "ERROR: Ray should intersect the cylinder.");
+        // TC01: Side intersection
+        Ray ray1 = new Ray(new Point(-2, 1, 0), new Vector(1, 0, 0));
+        List<Point> result1 = cylinder.findIntersections(ray1);
+        assertNotNull(result1, "TC01: Expected intersections");
+        assertEquals(2, result1.size(), "TC01: Expected 2 intersections on side");
 
-        // Test case: Ray does not intersect the cylinder
-        Ray rayNoIntersection = new Ray(new Point(3, 3, 3), new Vector(1, 1, 1));
-        assertTrue(cylinder.findIntersections(rayNoIntersection).isEmpty(), "ERROR: Ray should not intersect the cylinder.");
+        // TC02: Ray above cylinder (no intersection)
+        assertNull(cylinder.findIntersections(new Ray(new Point(-2, 3, 0), new Vector(1, 0, 0))),
+                "TC02: Expected no intersection (above)");
+
+        // TC03: Ray hitting only the top base (perpendicular to base center)
+        Ray ray3 = new Ray(new Point(0.5, 3, 0), new Vector(0, -1, 0));
+        List<Point> result3 = cylinder.findIntersections(ray3);
+        assertNotNull(result3, "TC03: Expected intersection with top base");
+        assertEquals(1, result3.size(), "TC03: Expected 1 intersection with top base");
+        assertEquals(new Point(0.5, 2, 0), result3.get(0), "TC03: Wrong intersection point with top base");
+
+        // TC04: Ray hitting only the bottom base (perpendicular to base center)
+        Ray ray4 = new Ray(new Point(0.5, -1, 0), new Vector(0, 1, 0));
+        List<Point> result4 = cylinder.findIntersections(ray4);
+        assertNotNull(result4, "TC04: Expected intersection with bottom base");
+        assertEquals(1, result4.size(), "TC04: Expected 1 intersection with bottom base");
+        assertEquals(new Point(0.5, 0, 0), result4.get(0), "TC04: Wrong intersection point with bottom base");
+
+        // TC05: Ray starting on side, going outward — no intersection
+        Ray ray5 = new Ray(new Point(-1, 1, 0), new Vector(-1, 0, 0));
+        assertNull(cylinder.findIntersections(ray5), "TC05: Expected no intersection (from surface out)");
+
+        // TC06: Ray tangent to side surface — no intersection
+        assertNull(cylinder.findIntersections(new Ray(new Point(1, 1, -1), new Vector(0, 0, 1))),
+                "TC06: Expected no intersection (tangent)");
+
+        // TC07: Ray along axis — should intersect both bases only
+        Ray ray7 = new Ray(new Point(0, -1, 0), new Vector(0, 1, 0));
+        List<Point> result7 = cylinder.findIntersections(ray7);
+        assertNotNull(result7, "TC07: Expected intersections along axis");
+        assertEquals(2, result7.size(), "TC07: Expected 2 intersections along axis");
+        assertTrue(result7.contains(new Point(0, 0, 0)), "TC07: Missing bottom base intersection");
+        assertTrue(result7.contains(new Point(0, 2, 0)), "TC07: Missing top base intersection");
     }
 }

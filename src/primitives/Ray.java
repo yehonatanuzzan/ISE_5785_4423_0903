@@ -54,15 +54,16 @@ public class Ray {
     }
 
     /**
-     * Returns the point at distance t from the ray's origin in the ray's direction.
+     * Returns the point at distance t along the ray.
      *
      * @param t the distance from the ray's origin
-     * @return the point P = p0 + t * dir
+     * @return the point at distance t along the ray's direction
      */
     public Point getPoint(double t) {
-        if (isZero(t)) return head;
+        if (isZero(t)) {
+            return head;
+        }
         return head.add(direction.scale(t));
     }
-
 }
 

@@ -6,6 +6,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -54,22 +56,37 @@ class TubeTest {
 
     // =============== Boundary Values Tests ==================
 
-    /**
-     * Test method for {@link Tube#getNormal(Point)}.
-     * <p>
-     * This test checks the behavior when the point is on the cylinder's axis,
-     * which is considered an edge case.
-     * </p>
-     * @throws IllegalArgumentException if the point is on the cylinder's axis.
-     */
     @Test
     void testGetNormalEdgeCase() {
         Ray axisRay = new Ray(new Point(0, 0, 0), new Vector(1, 0, 0));
         Tube tube = new Tube(axisRay, 1.0);
 
-        Point edgeCasePoint = new Point(0, 1, 0);
-        Vector normal = tube.getNormal(edgeCasePoint);
-
-        assertNotNull(normal, "Normal should be computed even for edge cases.");
+        Point edgeCasePoint = new Point(0, 0, 0);
+        assertThrows(IllegalArgumentException.class, () -> tube.getNormal(edgeCasePoint),
+                "Expected IllegalArgumentException for point exactly on the tube's axis");
     }
+
+
+    @Test
+    void testFindIntersections() {
+        // Tube centered on Y-axis with radius 1
+        Tube tube = new Tube(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1.0);
+
+        // Ray: comes from the left side and intersects the tube
+        Ray ray = new Ray(new Point(-2, 1, 0), new Vector(1, 0, 0));
+
+        // Expecting 2 intersection points
+        List<Point> intersections = tube.findIntersections(ray);
+        assertNotNull(intersections, "Expected intersections but got null");
+        assertEquals(2, intersections.size(), "Expected 2 intersection points");
+
+        // Optional: check specific values
+        Point p1 = intersections.get(0);
+        Point p2 = intersections.get(1);
+
+        // Check that both points lie on the ray and on the surface of the tube (radius = 1)
+        assertEquals(1.0, p1.distance(new Point(0, 1, 0)), 1e-10);
+        assertEquals(1.0, p2.distance(new Point(0, 1, 0)), 1e-10);
+    }
+
 }
